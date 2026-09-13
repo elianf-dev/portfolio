@@ -5,10 +5,14 @@ export type Project = {
   title: string;
   oneLiner: string;
   status: ProjectStatus;
+  /** Jewel-tone glass accent for this project's pane. */
+  accent: string;
+  /** Renders in the larger flagship pane. */
+  featured?: boolean;
   role: string;
   stack: string[];
   problem: string;
-  whatIBuilt: string;
+  builtBullets: string[];
   outcome: string;
   links?: {
     repo?: string;
@@ -27,46 +31,58 @@ export const projects: Project[] = [
     slug: "fm-media",
     title: "Photography Studio Booking Platform",
     oneLiner:
-      "Full-stack site for a real estate photography service: public booking, portfolio, and an admin panel for the business owner.",
+      "A real estate photographer's whole business online: portfolio, pricing, bookings, and self-serve admin.",
     status: "live",
+    accent: "#C68A2E",
+    featured: true,
     role: "Full-stack developer",
     stack: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "Vercel Blob"],
     problem:
-      "A photography services client needed one site that could show off their portfolio, publish pricing packages, take booking inquiries, and let them manage all of it themselves without touching code.",
-    whatIBuilt:
-      "A Next.js App Router site with static-first, ISR-cached marketing pages (Home, Services, Pricing, Portfolio) for speed, a client-side contact/booking flow backed by a server action and JSON API, and a dynamic admin section with full CRUD for services and gallery images plus inquiry review. Gallery uploads go through Vercel Blob storage with URLs persisted in PostgreSQL via Prisma, and images render through next/image with AVIF/WebP support.",
+      "A photography services client needed one site to show off their work, publish pricing, take bookings, and manage all of it themselves — no developer on call.",
+    builtBullets: [
+      "Fast, cached marketing pages: Home, Services, Pricing, Portfolio",
+      "A booking form that saves inquiries and also accepts JSON requests for integrations",
+      "An admin panel with full control over services, gallery images, and inquiries",
+      "Photo uploads via Vercel Blob storage, served as optimized AVIF/WebP",
+    ],
     outcome:
-      "Shipped and in production. The client can publish new services and gallery images and triage booking inquiries without any developer involvement.",
+      "Shipped and in production. The client publishes new work and manages bookings without touching code.",
   },
   {
     slug: "la-dulceria",
     title: "E-Commerce Redesign for a Retail Client",
     oneLiner:
-      "Rebuilding a candy, party-supply, and piñata retailer's storefront around a custom bundle configurator and bilingual EN/ES catalog.",
+      "A build-your-own bundle configurator for a candy & piñata retailer's storefront.",
     status: "in-progress",
+    accent: "#8C2F3B",
     role: "Full-stack developer",
     stack: ["Next.js", "TypeScript", "Tailwind CSS"],
     problem:
-      "The client was running a generic WooCommerce storefront that couldn't represent their real product: build-your-own candy bags and party packs, plus shipping logic for fragile, variant-heavy inventory like piñatas.",
-    whatIBuilt:
-      "A Next.js redesign built directly from the incumbent site's real product and category data, centered on a build-your-own bundle/party-pack configurator with per-item pricing and quantity limits, full bilingual (EN/ES) presentation, and shipping rules tailored to breakable inventory instead of flat-rate shipping.",
+      "The client's storefront was a generic template that couldn't represent their real product — build-your-own candy bags, party packs, and fragile, variant-heavy inventory like piñatas.",
+    builtBullets: [
+      "A build-your-own bundle configurator with per-item pricing and quantity limits",
+      "Full bilingual EN/ES presentation, built from the client's real catalog data",
+      "Shipping rules written for breakable inventory instead of flat-rate shipping",
+    ],
     outcome:
-      "In active development — catalog and configurator scaffold in place, with taxonomy and wholesale account flows being reconciled against the client's live store ahead of launch.",
+      "In active development — catalog and configurator are live in staging; taxonomy and wholesale flows are being reconciled ahead of launch.",
   },
   {
     slug: "vitamind",
     title: "VitaMind",
-    oneLiner:
-      "A wellness companion app for building healthy daily habits, built end-to-end with Flutter and Firebase.",
+    oneLiner: "A calm, source-supported wellness app for building better habits.",
     status: "in-progress",
+    accent: "#1F6F54",
     role: "Solo developer",
     stack: ["Flutter", "Dart", "Firebase"],
     problem:
-      "Wanted a personal, source-supported wellness app that felt calm and trustworthy rather than gamified and pushy — most habit apps lean too hard on streak anxiety.",
-    whatIBuilt:
-      "A cross-platform Flutter app with Firebase for auth and data, then a full visual redesign: a Deep Teal and Coral palette, Fraunces and Inter typography, pill-shaped buttons, and a glassmorphic UI. Also hardened account-deletion flows and error handling.",
-    outcome:
-      "Core app and redesign are built; ongoing polish before a broader release.",
+      "Wanted a personal wellness app that felt trustworthy and calm, not gamified and pushy.",
+    builtBullets: [
+      "Cross-platform Flutter app with Firebase for auth and data",
+      "A full visual redesign: Deep Teal and Coral, Fraunces and Inter type, a glassmorphic UI",
+      "Hardened account-deletion flow and error handling",
+    ],
+    outcome: "Core app and redesign are built; polishing before a broader release.",
     links: {
       repo: "https://github.com/elianf-dev/VitaMind",
     },
@@ -75,30 +91,37 @@ export const projects: Project[] = [
     slug: "pee-tracker",
     title: "Pee Tracker",
     oneLiner:
-      "A lighthearted group accountability app — track streaks with friends, no server bill required.",
+      "A lighthearted group accountability app — streaks with friends, no server bill required.",
     status: "in-progress",
+    accent: "#2C4E8C",
     role: "Solo developer",
     stack: ["Kotlin", "Android", "Firebase (Spark plan)"],
     problem:
-      "Wanted a fun, genuinely free habit-tracking app for a friend group, without taking on Cloud Functions billing or an iOS build pipeline I don't currently have the hardware for.",
-    whatIBuilt:
-      "A native Android client built entirely on Firebase's free Spark plan (no Cloud Functions), with group creation, streaks, and a leaderboard. iOS groundwork exists but is intentionally paused.",
+      "Wanted a genuinely free habit tracker for a friend group — no Cloud Functions billing, no iOS build pipeline I don't have the hardware for yet.",
+    builtBullets: [
+      "Native Android client built entirely on Firebase's free Spark plan",
+      "Group creation, streaks, and a leaderboard",
+      "iOS groundwork exists but is intentionally paused",
+    ],
     outcome:
-      "Actively used and iterated on with the Android client; multi-group switching and notification polish are the current focus.",
+      "Actively used by a real friend group; multi-group switching and notification polish are next.",
   },
   {
     slug: "broadintern",
     title: "Robotics Monitoring Dashboard",
     oneLiner:
-      "A Flask control panel for an Arduino-based rig — live sensor charts, joystick control, and hazard checks.",
+      "A Flask control panel for an Arduino rig — live charts, joystick control, hazard checks.",
     status: "prototype",
+    accent: "#5B3A73",
     role: "Solo developer",
     stack: ["Python", "Flask", "Arduino", "Serial/threading"],
-    problem:
-      "Wanted a web dashboard to monitor and drive a microcontroller rig in real time instead of watching a serial console.",
-    whatIBuilt:
-      "A Flask app that talks to an Arduino over serial in a background thread, streaming sensor data into live charts, translating joystick input (with deadzone filtering) into motor commands, and triggering hazard/emergency stops with LED and buzzer feedback. Includes basic session-based login for the dashboard.",
+    problem: "Wanted a web dashboard to monitor and drive a microcontroller rig in real time, instead of watching a serial console.",
+    builtBullets: [
+      "Flask app streaming live sensor data into charts over a background serial thread",
+      "Joystick input with deadzone filtering, translated into motor commands",
+      "Hazard/emergency-stop triggers with LED and buzzer feedback",
+    ],
     outcome:
-      "Functional prototype; an experimental voice-command layer was added but never fully verified. Shelved after the initial build sprint.",
+      "A functional prototype. An experimental voice-command layer was never fully verified. Shelved after the initial build sprint.",
   },
 ];

@@ -1,36 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafafa;
-  --foreground: #16161a;
-  --surface: #ffffff;
-  --border: #e5e5e8;
-  --muted: #6b6b74;
-  --accent: #5b5bf0;
-  --accent-foreground: #ffffff;
+  --background: #eeece7;
+  --foreground: #15151a;
+  --surface: #f5f4f1;
+  --frost: #dcdad4;
+  --muted: #5c5c66;
+  --focus: #101116;
+  --shadow-color: 15, 15, 20;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
-  --color-border: var(--border);
+  --color-frost: var(--frost);
   --color-muted: var(--muted);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0b0b0d;
-    --foreground: #f2f2f4;
-    --surface: #151517;
-    --border: #26262b;
-    --muted: #97979f;
-    --accent: #8888ff;
-    --accent-foreground: #0b0b0d;
+    --background: #08080a;
+    --foreground: #f0efe9;
+    --surface: #1b1c22;
+    --frost: #26262c;
+    --muted: #9c9ca6;
+    --focus: #f0efe9;
+    --shadow-color: 0, 0, 0;
   }
 }
 
@@ -40,7 +38,86 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
-dialog::backdrop {
-  background: rgba(10, 10, 12, 0.55);
-  backdrop-filter: blur(2px);
+.focusable:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/*
+ * Liquid-glass surface: a tinted translucent layer with a specular
+ * highlight that tracks the pointer, and a soft contact shadow for
+ * elevation. --hx/--hy (0-100) place the highlight; a component sets them
+ * on pointermove. --glass-depth scales the shadow for "thicker" material.
+ * The actual backdrop-filter (blur/saturate) is applied inline via
+ * lib/glass.ts — this build's CSS pipeline drops the unprefixed property
+ * from stylesheet rules, so it can't live here.
+ */
+.glass-pane {
+  --hx: 50%;
+  --hy: 20%;
+  --glass-depth: 1;
+  position: relative;
+  isolation: isolate;
+  background: color-mix(in srgb, var(--pane-accent, var(--surface)) 16%, var(--surface) 84%);
+  box-shadow:
+    0 calc(6px * var(--glass-depth)) calc(20px * var(--glass-depth))
+      rgba(var(--shadow-color), calc(0.1 * var(--glass-depth))),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.glass-pane::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--hx) var(--hy),
+    rgba(255, 255, 255, 0.5),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+  pointer-events: none;
+}
+
+.glass-pane:hover::before,
+.glass-pane:focus-visible::before {
+  opacity: 1;
+}
+
+.glass-pane:not(.is-frost):hover,
+.glass-pane:not(.is-frost):focus-visible {
+  background: color-mix(in srgb, var(--pane-accent, var(--surface)) 36%, var(--surface) 64%);
+}
+
+.glass-pane.is-frost {
+  background: color-mix(in srgb, var(--muted) 12%, var(--frost) 88%);
+}
+
+.glass-pane.is-frost:hover,
+.glass-pane.is-frost:focus-visible {
+  background: color-mix(in srgb, var(--muted) 20%, var(--frost) 80%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .glass-pane {
+    box-shadow:
+      0 calc(6px * var(--glass-depth)) calc(20px * var(--glass-depth)) rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+}
+
+.glass-scrim {
+  background: rgba(8, 8, 10, 0.55);
+}
+
+/* Floating translucent toolbar: content scrolls underneath. */
+.glass-scrim-light {
+  background: color-mix(in srgb, var(--surface) 65%, transparent);
+  box-shadow:
+    0 8px 24px rgba(var(--shadow-color), 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }

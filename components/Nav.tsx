@@ -1,4 +1,9 @@
+"use client";
+
+import { glassBlur, useReducedTransparency } from "@/lib/glass";
+
 export function Nav() {
+  const reducedTransparency = useReducedTransparency();
   const links = [
     { href: "#work", label: "Work" },
     { href: "#about", label: "About" },
@@ -6,24 +11,32 @@ export function Nav() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/80 backdrop-blur">
-      <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <a href="#top" className="text-sm font-semibold tracking-tight">
-          Elian Figueroa
-        </a>
-        <ul className="flex items-center gap-6 text-sm text-muted">
-          {links.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="transition-colors hover:text-foreground"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </header>
+    <div className="sticky top-4 z-40 flex justify-center px-4">
+      <header
+        className="glass-scrim-light w-full max-w-3xl rounded-full"
+        style={{
+          ...glassBlur(20, 180, reducedTransparency),
+          ...(reducedTransparency ? { backgroundColor: "var(--surface)" } : {}),
+        }}
+      >
+        <nav className="flex items-center justify-between px-6 py-3">
+          <a href="#top" className="focusable rounded-full font-mono text-sm font-medium tracking-tight">
+            Elian Figueroa
+          </a>
+          <ul className="flex items-center gap-6 font-mono text-sm text-muted">
+            {links.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="focusable rounded-full transition-colors hover:text-foreground"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </header>
+    </div>
   );
 }
